@@ -62,36 +62,12 @@ services:
     ports:
       - "1812:1812/udp"
       - "1813:1813/udp"
-    environment:
-      # Realm 1
-      REALM_1_DOMAIN: "example.com"
-      REALM_1_CLIENT_ID: "${REALM_1_CLIENT_ID}"
-      REALM_1_SECRET: "${REALM_1_SECRET}"
-      # Realm 2
-      REALM_2_DOMAIN: "contoso.com"
-      REALM_2_CLIENT_ID: "${REALM_2_CLIENT_ID}"
-      REALM_2_SECRET: "${REALM_2_SECRET}"
-      # Client 1
-      CLIENT_1_NAME: "PFSense"
-      CLIENT_1_NETWORK: "172.28.0.4/32"
-      CLIENT_1_SECRET: "${CLIENT_1_SECRET}"
-      # Client 2
-      CLIENT_2_NAME: "AccessPoint"
-      CLIENT_2_NETWORK: "10.0.0.0/24"
-      CLIENT_2_SECRET: "${CLIENT_2_SECRET}"
+    env_file:
+      - .env
     restart: unless-stopped
 ```
 
-Create a `.env` file alongside `docker-compose.yml` with your secrets:
-
-```
-REALM_1_CLIENT_ID=aaa-bbb-ccc
-REALM_1_SECRET=secret1
-REALM_2_CLIENT_ID=ddd-eee-fff
-REALM_2_SECRET=secret2
-CLIENT_1_SECRET=nassecret1
-CLIENT_2_SECRET=nassecret2
-```
+All realm and client variables are defined in a `.env` file. Add or remove entries as needed without modifying `docker-compose.yml`. See `.env.example` for the expected format.
 
 # Security caveat
 
