@@ -63,11 +63,11 @@ services:
       - "1812:1812/udp"
       - "1813:1813/udp"
     env_file:
-      - .env
+      - stack.env
     restart: unless-stopped
 ```
 
-All realm and client variables are defined in a `.env` file. Add or remove entries as needed without modifying `docker-compose.yml`. See `.env.example` for the expected format.
+All realm and client variables are defined in a `stack.env` file. Add or remove entries as needed without modifying `docker-compose.yml`. See `stack.env.example` for the expected format.
 
 # Security caveat
 

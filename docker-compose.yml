@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     privileged: true
     env_file:
-      - .env
+      - stack.env
     ports:
       - "1812:1812/udp"
       - "1813:1813/udp"
