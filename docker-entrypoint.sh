@@ -4,23 +4,41 @@ set -e
 PATH=/opt/sbin:/opt/bin:$PATH
 export PATH
 
-cat >> /etc/raddb/proxy.conf <<EOF
-realm $AzureAdDomain {
+# --- Realms ---
+i=1
+while true; do
+    eval "domain=\$REALM_${i}_DOMAIN"
+    [ -z "$domain" ] && break
+    eval "client_id=\$REALM_${i}_CLIENT_ID"
+    eval "client_secret=\$REALM_${i}_SECRET"
+    cat >> /etc/raddb/proxy.conf <<EOF
+realm $domain {
     oauth2 {
         discovery = "https://login.microsoftonline.com/%{Realm}/v2.0"
-        client_id = "$AzureAdClientId"
-        client_secret = "$AzureAdSecret"
+        client_id = "$client_id"
+        client_secret = "$client_secret"
         cache_password = yes
     }
 }
 EOF
+    i=$((i + 1))
+done
 
-cat >> /etc/raddb/clients.conf <<EOF
-client $NASName {
-    ipaddr = $NASNetwork
-    secret = $NASSecret
+# --- Clients ---
+i=1
+while true; do
+    eval "name=\$CLIENT_${i}_NAME"
+    [ -z "$name" ] && break
+    eval "network=\$CLIENT_${i}_NETWORK"
+    eval "secret=\$CLIENT_${i}_SECRET"
+    cat >> /etc/raddb/clients.conf <<EOF
+client $name {
+    ipaddr = $network
+    secret = $secret
 }
 EOF
+    i=$((i + 1))
+done
 
 # this if will check if the first argument is a flag
 # but only works if all arguments require a hyphenated flag

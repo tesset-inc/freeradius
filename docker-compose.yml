@@ -1,0 +1,21 @@
+services:
+  freeradius:
+    container_name: freeradius
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: host
+    restart: unless-stopped
+    privileged: true
+    environment:
+      # Realm 1
+      REALM_1_DOMAIN: "${REALM_1_DOMAIN}"
+      REALM_1_CLIENT_ID: "${REALM_1_CLIENT_ID}"
+      REALM_1_SECRET: "${REALM_1_SECRET}"
+      # Client 1
+      CLIENT_1_NAME: "${CLIENT_1_NAME}"
+      CLIENT_1_NETWORK: "${CLIENT_1_NETWORK}"
+      CLIENT_1_SECRET: "${CLIENT_1_SECRET}"
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
