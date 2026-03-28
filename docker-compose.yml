@@ -1,9 +1,7 @@
 services:
   freeradius:
     container_name: freeradius
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/tesset-inc/freeradius:v1.0.0
     network_mode: host
     restart: unless-stopped
     privileged: true
